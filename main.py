@@ -38,6 +38,11 @@ class Exelfile:
                 break
         return number_list
 
+    def searsh_cord(mnumber_item):
+        """координаты ячейки по номеру"""
+
+        pass
+
 class API_set:
     """Взаимодействие с API сервиса"""
 
