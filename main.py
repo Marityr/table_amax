@@ -1,9 +1,9 @@
 import os
 import requests
-
+import json
 import openpyxl
-from openpyxl import Workbook, load_workbook
 
+from openpyxl import Workbook, load_workbook
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -21,7 +21,7 @@ class Exelfile:
         brand_list = list()
         for cell in brand['A']:
             brand_list.append(cell.value)
-
+ 
         return brand_list
 
     def read_file_sheet():
@@ -34,14 +34,25 @@ class Exelfile:
         for cell in sheet['E']:
             number_list.append(cell.value)
             item += 1
-            if item >= 1000:
-                break
+            # if item >= 100:
+            #     break
+
         return number_list
 
-    def searsh_cord(mnumber_item):
-        """координаты ячейки по номеру"""
+    def records(brand_list):
+        """Обработка данных"""
 
-        pass
+        shet_list = load_workbook('export.xlsx')
+        sheet = shet_list['sheet']
+
+        iter = 0
+        for cell in sheet['E']:
+            iter += 1
+            data = API_set.get_api(cell.value)
+
+            for item in data:
+                print(item.number)
+
 
 class API_set:
     """Взаимодействие с API сервиса"""
@@ -64,6 +75,20 @@ class API_set:
             print(items)
         return listen
 
+    def get_api(number):
+        """Запрос данных по API"""
+
+        HOST_API = os.getenv('HOST_API')
+        USER_API = os.getenv('USER_API')
+        PASSWORD_API = os.getenv('PASSWORD_API')   
+
+        conect_url = f"https://{HOST_API}/search/brands/?userlogin={USER_API}&userpsw={PASSWORD_API}&number={number}"
+        response = requests.get(conect_url)
+        datajson = response.json()
+
+        return datajson
+
+
 
 
 def max_row() -> int:
@@ -74,12 +99,23 @@ def max_row() -> int:
     nb_row = sheet.max_row
     return int(nb_row)
 
-listen = Exelfile.read_file_sheet()
-listen.pop(0)
-#print(listen)
-tempel = API_set.connect_api(listen)
-print(tempel)
-# print(len(API_set.connect_api()))
+#listen = Exelfile.read_file_sheet()
 
+# listen.pop(0)
+#print(listen)
+#tempel = API_set.connect_api(listen)
+#with open('number_list_two.txt', 'w') as outfile:
+#    json.dump(tempel, outfile)
+#print(tempel)
+# print(len(API_set.connect_api()))
 # for i in range(2, 10):
 #     print(len(API_set.connect_api(i)))
+
+brand_list = Exelfile.read_file_brand()
+
+Exelfile.records(brand_list)
+
+
+
+
+
