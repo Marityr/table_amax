@@ -39,9 +39,9 @@ class Exelfile:
 
         return number_list
 
-    def records(brand_list):
+    def records():
         """Обработка данных"""
-
+    
         shet_list = load_workbook('export.xlsx')
         sheet = shet_list['sheet']
 
@@ -51,7 +51,10 @@ class Exelfile:
             data = API_set.get_api(cell.value)
 
             for item in data:
-                print(item.number)
+                print(data[item]['number'])
+
+            if iter >= 2:
+                break
 
 
 class API_set:
@@ -104,7 +107,7 @@ def max_row() -> int:
 # listen.pop(0)
 #print(listen)
 #tempel = API_set.connect_api(listen)
-#with open('number_list_two.txt', 'w') as outfile:
+# with open('number_list_two.txt', 'w') as outfile:
 #    json.dump(tempel, outfile)
 #print(tempel)
 # print(len(API_set.connect_api()))
@@ -113,9 +116,14 @@ def max_row() -> int:
 
 brand_list = Exelfile.read_file_brand()
 
-Exelfile.records(brand_list)
+Exelfile.records()
 
+# with open('number_list.txt') as json_file:
+#     data = json.load(json_file)
 
+# for item in data:
+#     for i in item:
+#         print(item[i]['brand'])
 
 
 
