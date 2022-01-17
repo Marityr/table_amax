@@ -16,7 +16,7 @@ def get_api(number):
     USER_API = os.getenv('USER_API')
     PASSWORD_API = os.getenv('PASSWORD_API')
 
-    conect_url = f"https://{HOST_API}/search/brands/?userlogin={USER_API}&userpsw={PASSWORD_API}&number={number}"
+    conect_url = f"https://{HOST_API}/search/brands/?userlogin={USER_API}&userpsw={PASSWORD_API}&number={number}&useOnlineStocks=1"
     response = requests.get(conect_url)
     datajson = response.json()
 
@@ -39,7 +39,7 @@ def read_file_brand() -> list:
 def records():
     """Обработка данных"""
 
-    shet_list = load_workbook('export.xlsx')
+    shet_list = load_workbook('export_new.xlsx')
     sheet = shet_list['sheet']
     sheet = shet_list.active
 
@@ -63,9 +63,9 @@ def records():
                 col_ls += 2
         
         # ограничение для тестов
-        if iter == 100000:
+        if iter == 100:
             break
-    shet_list.save('export.xlsx')
+    shet_list.save('export_new.xlsx')
     shet_list.close()
 
 records()
