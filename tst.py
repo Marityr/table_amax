@@ -54,7 +54,7 @@ def records():
 
         col_ls = 6
         for element in data_list:
-            print(iter, col_ls)
+            print(iter, col_ls, data_list[element])
             if element == 'errorCode' or element == 'errorMessage':
                 break
             if data_list[element]['brand'] in brand_list:
@@ -63,7 +63,7 @@ def records():
                 col_ls += 2
         
         # ограничение для тестов
-        if iter == 100:
+        if iter == 10000000:
             break
     shet_list.save('export_new.xlsx')
     shet_list.close()
